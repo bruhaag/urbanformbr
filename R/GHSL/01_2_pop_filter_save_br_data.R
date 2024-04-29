@@ -1,18 +1,18 @@
-# description -------------------------------------------------------------
+# descrição -------------------------------------------------------------
 
-# this script
-# i. reads data from GHS-POP (1km resolution)
-# ii. filter data from Brazil polygon
-# iii. saves brasil raster .tif for for future cleaning and manipulation
+# este script
+#i. lê dados do GHS-POP (resolução de 1km ou 250 - substituir na linha 29)
+#ii. filtrar dados do polígono Brasil
+#iii. salva brasil raster .tif para futura limpeza e manipulação
 
-# TO DO LIST:
-## FIX OR ERASE STARS FUNCTION
-## CHECK THE NEED TO STACK RASTER/STARS FILES ON TOP OF EACH OTHER
-## EXPAND THE FUNCTION TO OTHER RESOLUTIONS?
+# LISTA DE AFAZERES:
+## FUNÇÃO CORRIGIR OU APAGAR ESTRELAS
+## VERIFIQUE A NECESSIDADE DE EMPILHAR ARQUIVOS RASTER/ESTRELAS UNS SOBRE OS OUTROS
+## EXPANDIR A FUNÇÃO PARA OUTRAS RESOLUÇÕES?
 
 # setup -------------------------------------------------------------------
 
-source('R/setup.R')
+source('R/fun_support/setup.R')
 
 # directory ---------------------------------------------------------------
 
@@ -93,3 +93,4 @@ f_save_brasil_raster <- function(input, output){
 purrr::walk2(.x = files_input, .y = files_output_raster, function(x,y)
   f_save_brasil_raster(input = x, output = y)
 )
+

@@ -15,7 +15,7 @@ process_city <- function(data, city) {
 
   message(paste("working on city", city))
 
-  years_start <- c(1990, 2000, 1990)
+  years_start <- c(1975, 2000, 1975)
   years_end <- c(2000, 2014, 2014)
 
   city_processed <- map2_df(years_start, years_end, function(y1, y2) {
@@ -133,9 +133,10 @@ process_city <- function(data, city) {
 
 urban_extent <-
   rbind(
-    read_rds("../../data/urbanformbr/ghsl/results/grid_uca_1990_cutoff20.rds") %>% mutate(year = 1990),
-    read_rds("../../data/urbanformbr/ghsl/results/grid_uca_2000_cutoff20.rds") %>% mutate(year = 2000),
-    read_rds("../../data/urbanformbr/ghsl/results/grid_uca_2014_cutoff20.rds") %>% mutate(year = 2014)
+    read_rds("../../data/urbanformbr/ghsl/results/grid_uca_1975_cutoff5.rds") %>% mutate(year = 1975),
+    read_rds("../../data/urbanformbr/ghsl/results/grid_uca_1990_cutoff5.rds") %>% mutate(year = 1990),
+    read_rds("../../data/urbanformbr/ghsl/results/grid_uca_2000_cutoff5.rds") %>% mutate(year = 2000),
+    read_rds("../../data/urbanformbr/ghsl/results/grid_uca_2014_cutoff5.rds") %>% mutate(year = 2014)
   ) %>%
   mutate(status = "")
 
@@ -149,7 +150,7 @@ cities <- unique(urban_extent$name_uca_case)
 
 urban_extent_processed <- map_df(cities, process_city, data = urban_extent)
 
-write_rds(urban_extent_processed, "../../data/urbanformbr/urban_growth/grid_uca_growth.rds")
+write_rds(urban_extent_processed, "../../data/urbanformbr/urban_growth/grid_uca_growth5.rds")
 
 
 # calculate population growth by status ------------------------------------------
@@ -199,25 +200,29 @@ urban_growth_df <- urban_growth_df %>%
   rename(pop_by_growth_type = pop, built_by_growth_type = built)
 
 
-write_rds(urban_growth_df, "../../data/urbanformbr/urban_growth/urban_growth.rds")
+write_rds(urban_growth_df, "../../data/urbanformbr/urban_growth/urban_growth5.rds")
 
 
 # check results -----------------------------------------------------------
 
-urban_extent_processed <- read_rds(file = "../../data/urbanformbr/urban_growth/grid_uca_growth.rds")
+urban_extent_processed <- read_rds(file = "../../data/urbanformbr/urban_growth/grid_uca_growth5.rds")
 
 # poa_df %>%
 urban_extent_processed %>%
-  filter(name_uca_case == "porto_alegre_rs") %>%
+  filter(name_uca_case == "blumenau_sc"|
+           name_uca_case == "caxias_do_sul_rs"|
+           name_uca_case == "londrina_pr") %>%
   ggplot() +
   geom_sf(aes(fill=status)) +
   facet_wrap(~period_start + period_end)
 
-urban_growth_df <- read_rds("../../data/urbanformbr/urban_growth/urban_growth.rds")
+urban_growth_df <- read_rds("../../data/urbanformbr/urban_growth/urban_growth5.rds")
 
 urban_growth_df %>%
-  filter(name_uca_case == "porto_alegre_rs") %>%
-  View()
+  filter(name_uca_case == "blumenau_sc"|
+           name_uca_case == "caxias_do_sul_rs"|
+           name_uca_case == "londrina_pr") %>%
+  #View()
 
 
 mapviewOptions(platform = "leaflet")
@@ -238,6 +243,7 @@ save_html_map <- function(data, start, end) {
   mapshot(mv_growth, url = paste0(getwd(), "/map_urban_growth_", start, "_", end, ".html"))
 
 }
+save_html_map(urban_extent_processed, 1975, 2014)
 save_html_map(urban_extent_processed, 1990, 2014)
 save_html_map(urban_extent_processed, 1990, 2000)
 save_html_map(urban_extent_processed, 2000, 2014)

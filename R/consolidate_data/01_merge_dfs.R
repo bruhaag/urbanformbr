@@ -35,16 +35,16 @@ data.table::setDT(df_reference)[
 
 
 # * pop growth ------------------------------------------------------------
-
+# Bruna - arquivo ok
 df_pop_growth <- data.table::fread("../../data/urbanformbr/consolidated_data/urban_growth_population.csv")
 df_pop_growth[, name_uca_case := NULL]
 
 # * fleet ---------------------------------------------------------------
-
+# Bruna - arquivo ok
 df_fleet <- data.table::fread("../../data/urbanformbr/consolidated_data/denatran_fleet_metrics.csv")
 
 # * energy ------------------------------------------------------------------
-
+# Bruna - arquivo ok
 df_energy <- readr::read_rds("../../data/urbanformbr/consolidated_data/anp_energy-2010_metrics.rds")
 
 # filter 182 ucas
@@ -65,18 +65,22 @@ setnames(x = df_energy
 
 
 # * censo -----------------------------------------------------------------
+# Bruna - arquivo ok
 df_censo <- data.table::fread("../../data/urbanformbr/consolidated_data/censo_metrics.csv")
 df_censo[, name_uca_case := NULL]
 
 # * experienced density ---------------------------------------------------
+# Bruna - arquivo ok
 df_exp_density <- data.table::fread("../../data/urbanformbr/consolidated_data/ghsl_experienced_density_metrics.csv")
 df_exp_density[, name_uca_case := NULL]
 
 # * landuse metrics -------------------------------------------------------
+# Bruna - arquivo FALTANDO
 df_landuse <- data.table::fread("../../data/urbanformbr/consolidated_data/landuse_mix.csv")
 df_landuse[, name_uca_case := NULL]
 
 # * street metrics --------------------------------------------------------
+# Bruna - arquivo FALTANDO
 df_street <- data.table::fread("../../data/urbanformbr/consolidated_data/streets_metrics_new_23_12_2021_v3.csv")
 df_street <- subset(df_street, name_urban_concentration %in% df_reference$name_urban_concentration)
 
@@ -84,20 +88,25 @@ df_street <- subset(df_street, name_urban_concentration %in% df_reference$name_u
 #   dplyr::rename(street_orientation_irregularity = entropy)
 
 # * fragmentation compacity -----------------------------------------------
+# Bruna - arquivo ok
 df_frag_comp <- data.table::fread("../../data/urbanformbr/consolidated_data/fragmentation_compacity.csv")
 
 # * topography ------------------------------------------------------------
+# Bruna - arquivo FALTANDO
 df_topo <- data.table::fread("../../data/urbanformbr/consolidated_data/topography_metrics.csv")
 df_topo[, name_uca_case := NULL]
 
 # * tma (public transport) --------------------------------------------------
+# Bruna - arquivo ok
 df_tma <- data.table::fread("../../data/urbanformbr/consolidated_data/classify_tma_public_transport.csv")
 
 # * factors ---------------------------------------------------------------
+# Bruna - arquivo FALTANDO
 df_factors <- data.table::fread("../../data/urbanformbr/consolidated_data/factor_analysis_metrics.csv")
 
 
 # * uci urban centrality index --------------------------------------------
+# Bruna - arquivo FALTANDO
 df_uci <- data.table::fread("../../data/urbanformbr/consolidated_data/uci_urban_centrality_index.csv")
 
 # merge data --------------------------------------------------------------

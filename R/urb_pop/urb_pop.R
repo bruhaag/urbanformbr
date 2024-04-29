@@ -3,10 +3,10 @@
 #
 rm(list=ls())
 library(ggrepel)
-source('R/colours.R')
-source("R/setup.R")
+source('R/fun_support/colours.R')
+source("R/fun_support/setup.R")
 source("R/urb_pop/colors_plot.R")
-source("R/style.R")
+#source("R/fun_support/style.R")
 source("R/urb_pop/aop_style1.R")
 #devtools::install_github("rpradosiqueira/sidrar")
 library("sidrar")
@@ -37,7 +37,7 @@ data.table::setDT(pop202)
 names(pop202) <- janitor::make_clean_names(names(pop202))
 
 # write output
-readr::write_rds(pop202,"data/table_202_ibge.rds",compress="gz")
+readr::write_rds(pop202,"C:/Users/haagb/data/table_202_ibge.rds",compress="gz")
 
 ## PNAC download
 # Downloading data
@@ -161,7 +161,7 @@ ca_exp <- lapply(1:nrow(comp_areas),function(i){
   return(dt)
 }) %>% data.table::rbindlist()
 
-readr::write_rds(ca_exp,"data/comparable_areas_ibge.rds",compress = "gz")
+readr::write_rds(ca_exp,"C:/Users/haagb/data/comparable_areas_ibge.rds",compress = "gz")
 
 
 # read pop
@@ -180,5 +180,5 @@ pop <- lapply(my_years,function(i){
 names(pop) <- janitor::make_clean_names(names(pop))
 
 
-readr::write_rds(pop,"data/population_muni_ibge.rds",compress = "gz")
+readr::write_rds(pop,"C:/Users/haagb/data/population_muni_ibge.rds",compress = "gz")
 

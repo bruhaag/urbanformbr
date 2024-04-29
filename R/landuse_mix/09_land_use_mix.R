@@ -6,13 +6,13 @@
 # setup -------------------------------------------------------------------
 
 source('R/fun_support/setup.R')
-library("segregr")
+#library("segregr")
 
 # list of Brazilian municipalities
-munis_df <- geobr::lookup_muni("all")
+munis_df <- geobr::lookup_muni(4202404, 4305108, 4113700)
 ucas_df <- geobr::read_urban_concentrations() %>% st_set_geometry(NULL)
 
-urban_areas <- read_rds("../../data/urbanformbr/ghsl/results/grid_uca_2014_cutoff20.rds")
+urban_areas <- read_rds("../../data/urbanformbr/ghsl/results/grid_uca_2014_cutoff5.rds")
 
 
 # Grid 1km ----------------------------------------------------------------

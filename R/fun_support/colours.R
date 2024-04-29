@@ -4,7 +4,7 @@ source("R/fun_support/style.R")
 
 # Paletas ----
 
-aop_colors <- c(
+aop_colors = c(
   # cores (1-4: mais claro-mais escuro)
 
   ## qualitativas

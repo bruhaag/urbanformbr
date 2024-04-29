@@ -68,4 +68,3 @@ states_sf <- geobr::read_state()
 
 walk(states_sf$abbrev_state, download_logradouros_2010)
 walk(states_sf$abbrev_state, download_logradouros_2019)
-

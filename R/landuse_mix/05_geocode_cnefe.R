@@ -46,7 +46,7 @@ vparse_lat_lon <- Vectorize(FUN = parse_lat_lon, vectorize.args = "coord")
 geocode_latlon <- function(muni) {
   # extract urban area name and uf from data
   muni_name <- unique(subset(munis_df, code_muni == muni)$name_muni)
-  muni_uf <- unique(subset(munis_df, code_muni == muni)$abrev_state)
+  muni_uf <- unique(subset(munis_df, code_muni == muni)$abbrev_state)
 
   output_file <- paste0("../../data/urbanformbr/cnefe/geo/partial/", muni_uf, "/", muni, "_", muni_name, "_", muni_uf, "_latlon.rds")
 
@@ -76,7 +76,7 @@ geocode_latlon <- function(muni) {
 geocode_logradouro <- function(muni) {
   # extract urban area name and uf from data
   muni_name <- unique(subset(munis_df, code_muni == muni)$name_muni)
-  muni_uf <- unique(subset(munis_df, code_muni == muni)$abrev_state)
+  muni_uf <- unique(subset(munis_df, code_muni == muni)$abbrev_state)
 
   output_file <- paste0("../../data/urbanformbr/cnefe/geo/partial/", muni_uf, "/", muni, "_", muni_name, "_", muni_uf, "_logradouro.rds")
 
@@ -138,7 +138,7 @@ geocode_logradouro <- function(muni) {
 build_gpkg <- function(muni) {
   # extract urban area name and uf from data
   muni_name <- unique(subset(munis_df, code_muni == muni)$name_muni)
-  muni_uf <- unique(subset(munis_df, code_muni == muni)$abrev_state)
+  muni_uf <- unique(subset(munis_df, code_muni == muni)$abbrev_state)
 
   output_file <- paste0("../../data/urbanformbr/cnefe/geo/", muni_uf, "/", muni, "_", muni_name, "_", muni_uf, ".gpkg")
 
@@ -183,12 +183,12 @@ geocode_muni <- function(muni) {
       geocode_logradouro(muni)
       build_gpkg(muni)
 
-      geocode_missing_by_logradouro_2019(muni)
+      geocode_missing_by_logradouro_2019(muni) #verificar com IPEA
       build_pkg_2019(muni)
     },
-  error = function(cond) {
-    message(cond)
-  })
+    error = function(cond) {
+      message(cond)
+    })
 }
 
 # apply function ----------------------------------------------------------
@@ -196,7 +196,7 @@ geocode_muni <- function(muni) {
 # future::plan(strategy = 'multisession', workers=10)
 
 # geocode_muni(4301602)
-codes <- unique(munis_df$code_muni)
+codes <- c(4202404, 4113700, 4305108)
 walk(codes, geocode_muni)
 walk(codes, geocode_muni_simple)
 

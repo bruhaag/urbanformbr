@@ -1,15 +1,17 @@
 
 # description -------------------------------------------------------------
 
-# this script plots urban extent (cutoff 20% of built up area) shape and urban shapes
-# (political administrative) to show the evolution of the urban extent from 1990 to 2014
+# este script plota a extensão urbana (corte de 20% da área construída) forma e formas urbanas
+# (político administrativo) para mostrar a evolução da extensão urbana de 1990 a 2014
 
 
 # setup -------------------------------------------------------------------
 source("R/fun_support/setup.R")
-#library("ggmap")
 source("R/fun_support/style.R")
 source("R/fun_support/colours.R")
+library(osmdata)
+library(ggmap)
+library(geobr)
 
 # select ucas -------------------------------------------------------------
 
@@ -19,37 +21,33 @@ source("R/fun_support/colours.R")
 
 #censo <- data.table::fread("../../data/urbanformbr/consolidated_data/censo_metrics.csv")
 
-#belem: 1501402
-#belo horizonte: 3106200
-#campo grande: 5002704
+dados_geobr = list_geobr()
+
+bnu <- read_municipality(code_muni = 4202404, year = 2020)
+cx <- read_municipality(code_muni = 4305108, year = 2020)
+lon <- read_municipality(code_muni = 4113700, year = 2020)
+
+#blumenau: 4202404
 #caxias do sul: 4305108
-#salvador: 2927408
-#teresina: 2211001
+#londrina: 4113700
 
-nomes <- c(
-  #"Belém/PA",
-  "Belo Horizonte/MG"
-  , "Salvador/BA"
-  #, "Teresina/PI"
+nomes <- ("Londrina/PR"
 )
 
-codigos <- c(
-  #1501402
-  3106200
-  #, 5002704
-  #, 4305108
-  , 2927408
-  #, 2211001
+codigos <- (4113700
 )
 
-anos <- c(1990,2000,2014)
-  # function extents ----------------------------------------------------------------
+order_years <- c(2014, 2000, 1990, 1975)
+
+
+anos <- c(1975,1990,2000,2014)
+# function extents ----------------------------------------------------------------
 f_prepare <- function(ano){
 
   # code_uca <- 2927408
   # ano <- 1990
 
-  df_full <- readr::read_rds(sprintf("../../data/urbanformbr/ghsl/results/urban_extent_uca_%s_cutoff20.rds",ano))
+  df_full <- readr::read_rds(sprintf("../../data/urbanformbr/ghsl/results/urban_extent_uca_%s_cutoff5.rds",ano))
 
   f_subset_bind <- function(code_uca){
     df_subset <- subset(df_full, code_urban_concentration == code_uca)
@@ -85,9 +83,10 @@ df_extents <- df_extents %>%
 df_extents <- df_extents %>%
   dplyr::mutate(
     hex = data.table::fcase(
-      year == 1990, "#edf8b1" #"#000004FF"
-      , year == 2000, "#7fcdbb" #"#BB3754FF"
-      , year == 2014, "#2c7fb8" #FCFFA4FF"
+        year == 1975, "#edf8b1"
+      , year == 1990, "#7fcdbb" #"#000004FF"
+      , year == 2000, "#2c7fb8" #"#BB3754FF"
+      , year == 2014, "#111F4F" #"FCFFA4FF"
       , default = NA
     )
   )
@@ -163,6 +162,8 @@ df_extents <- sf::st_transform(x = df_extents, crs = 4326)
 df_shapes <- df_shapes %>%
   mutate(centroid = sf::st_centroid(df_shapes) %>% st_geometry())
 
+df_extents$year <- factor(df_extents$year, levels = order_years)
+
 buffer_dist <- 50000
 units(buffer_dist) <- "m"
 
@@ -175,7 +176,8 @@ df_shapes <- df_shapes %>%
 
 f_plot <- function(code_uca){
 
-  # code_uca <- 2927408
+  code_uca <- 4113700
+
   extents_s <- subset(df_extents, code_urban_concentration == code_uca)
 
   shapes_s <- subset(df_shapes, code_urban_concentration == code_uca)
@@ -188,6 +190,19 @@ f_plot <- function(code_uca){
   buffer_s <- sf::st_buffer(shapes_s$centroid, dist = buffer_dist)
   b_box_s <- sf::st_bbox(buffer_s)
 
+   # consulta <- opq(bbox = b_box_s ) %>%
+   # add_osm_feature(key = 'highway', value = c("motorway",
+   #                                            "trunk",
+   #                                            "primary",
+   #                                            "secondary",
+   #                                            "tertiary",
+   #                                            "unclassified",
+   #                                            "residential"))
+   # dados_ruas <- osmdata_sf(consulta)
+
+    # consulta <- opq(bbox = b_box_s ) %>%
+    #   add_osm_feature(key = 'highway', value = c("motorway"))
+    # dados_motorway <- osmdata_sf(consulta)
 
   # plot
   ggplot() +
@@ -198,29 +213,53 @@ f_plot <- function(code_uca){
       , type = "cartolight" #cartodark
     ) +
     geom_sf(
+      data = lon, fill="grey30", color="black", alpha=.05, size=.15) +
+    #geom_sf(data = dados_ruas$osm_lines, aes(), color = "grey30", size = 0.1) +
+    geom_sf(
       data = shapes_s
       , aes()
       , fill = NA
     ) +
     geom_sf(
-      data = extents_s
-      , aes(fill = forcats::fct_rev(factor(year)))
-      , colour = NA
-      , alpha = 1
+      data = extents_s %>% filter(year == 2014),
+      aes(fill = factor(year)),
+      colour = NA,
+      alpha = 1
+    ) +
+    geom_sf(
+      data = extents_s %>% filter(year == 2000),
+      aes(fill = factor(year)),
+      colour = NA,
+      alpha = 1
+    ) +
+    geom_sf(
+      data = extents_s %>% filter(year == 1990),
+      aes(fill = factor(year)),
+      colour = NA,
+      alpha = 1
+    ) +
+    geom_sf(
+      data = extents_s %>% filter(year == 1975),
+      aes(fill = factor(year)),
+      colour = NA,
+      alpha = 1
     ) +
     ggspatial::annotation_scale(location = "tl") +
     ggspatial::annotation_north_arrow(
-      location = "br"
-      , height = unit(1, "cm")
-      , width = unit(1, "cm")
-      ) +
+      location = "br",
+      height = unit(1, "cm"),
+      width = unit(1, "cm")
+    ) +
     ggspatial::shadow_spatial(b_box_s) +
     scale_fill_manual(
       values = c(
-        "1990" = "#edf8b1"  #
-        , "2000" = "#41b6c4" #
-        , "2014" = "#253494" #
-          )
+        "1975" = "#edf8b1",
+        "1990" = "#7fcdbb",
+        "2000" = "#2c7fb8",
+        "2014" = "#111F4F"
+      ),
+      breaks = c(1975, 1990, 2000, 2014),
+      labels = c("1975","1990", "2000", "2014")
     ) +
     #scale_fill_brewer(palette = "OrRd", direction = -1) +
     #scale_fill_viridis_d(option = "inferno", direction = 1) +

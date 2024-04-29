@@ -24,7 +24,7 @@ source('R/fun_support/setup.R')
 f_prepare_df <- function(){
 
   # * read urban shapes -----------------------------------------------------
-  urban_shapes <- readr::read_rds('//storage6/usuarios/Proj_acess_oport/data/urbanformbr/urban_area_shapes/urban_area_pop_100000_dissolved.rds')
+  urban_shapes <- readr::read_rds('C:/Users/haagb/data/urbanformbr/urban_area_shapes/urban_area_pop_100000_dissolved.rds')
 
   # select only identification variables and setDT
   urban_shapes <-  data.table::setDT(urban_shapes)[
@@ -75,7 +75,7 @@ f_prepare_df <- function(){
 
   saveRDS(
     object = urban_shapes,
-    file = '//storage6/usuarios/Proj_acess_oport/data/urbanformbr/pca_regression_df/pca_regression_df.rds',
+    file = 'C:\\Users\\haagb\\data\\urbanformbr\\pca_regression_df/pca_regression_df.rds',
     compress = 'xz'
     )
 

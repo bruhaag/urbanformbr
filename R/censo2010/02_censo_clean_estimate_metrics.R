@@ -28,16 +28,22 @@ f_censo <- function(){
   # read data ---------------------------------------------------------------
 
   # * censo domicilios ------------------------------------------------------
-  df_censo_dom <- readr::read_rds('../../data/urbanformbr/censo/censo_dom.rds')
+  df_censo_dom <- readr::read_rds('../../data/urbanformbr/censo/dom.rds')
 
   # * censo individuos ------------------------------------------------------
-  df_censo_pes <- readr::read_rds('../../data/urbanformbr/censo/censo_pes.rds')
+  df_censo_pes <- readr::read_rds('../../data/urbanformbr/censo/pop.rds')
+
+  df_censo_dom$V0001 <- as.numeric(df_censo_dom$V0001)
+  df_censo_dom$V0002 <- as.numeric(df_censo_dom$V0002)
+
+  df_censo_pes$V0001 <- as.numeric(df_censo_pes$V0001)
+  df_censo_pes$V0002 <- as.numeric(df_censo_pes$V0002)
 
   # * pca regression df -----------------------------------------------------
 
   # read df with code and names of urban concentration, and codes of each muni
   #..belonging to them
-  df_codes <- readr::read_rds("//storage6/usuarios/Proj_acess_oport/data/urbanformbr/urban_area_shapes/urban_area_pop_100000_dissolved.rds")
+  df_codes <- readr::read_rds("C:\\Users\\haagb\\data\\urbanformbr\\urban_area_shapes\\urban_area_pop_100000_dissolved.rds")
 
   df_codes <- df_codes %>%
     sf::st_drop_geometry() %>%
@@ -61,6 +67,7 @@ f_censo <- function(){
   # * add urban concentration area code -------------------------------------
 
   # fix muni code
+
   df_censo_dom[, code_muni := (V0001*100000) + V0002]
 
   df_censo_pes[, code_muni := (V0001*100000) + V0002]
@@ -132,7 +139,7 @@ f_censo <- function(){
   ]
 
 
-# * merge dom + pes data --------------------------------------------------
+  # * merge dom + pes data --------------------------------------------------
 
   # merge household and individual data
   df_censo_pes[
@@ -586,13 +593,13 @@ f_censo <- function(){
     x = df_wghtd_mean_pes
     , y = df_prop_pes
     , by = "code_urban_concentration"
-    )
+  )
 
   df_vars_pes <- data.table::merge.data.table(
     x = df_vars_pes
     , y = df_pop_pes
     , by = "code_urban_concentration"
-   )
+  )
 
 
   # * merge dom pes vars ----------------------------------------------------
@@ -624,7 +631,7 @@ f_censo()
 #cols_to_read_dom <- c(
 #  'V0001', # UF
 #  'V0002', # codigo municipio
-  #'V0011', # area de ponderacao
+#'V0011', # area de ponderacao
 #  'V0010', # peso amostral
 #  "V0300", # controle
 #  "V1006", # situacao do domicilio (1 urbana 2 rural)
@@ -654,7 +661,7 @@ f_censo()
 #  "V0648", # nesse trabalho era
 #  "V6471", # atividade CNAE
 #  "V6462", # ocupacao CBO
-  #"V6910", # condicao na ocupacao (2- desocupadas)
+#"V6910", # condicao na ocupacao (2- desocupadas)
 #  "V6920", # situacao na ocupacao (2- nao ocupadas) -> USAR ESSE
 #  "V0661", # retorna do trabalho para casa diariamente (1 sim, 2 nao)
 #  "V0662", # tempo deslocamento casa-trabalho

@@ -10,14 +10,14 @@ library(patchwork)
 
 tmp_dt <- readr::read_rds(file = "../../data/urbanformbr/denatran/list_cars_motos.rds")
 
-df_raw <- readr::read_rds('../../data/urbanformbr/pca_regression_df/pca_regression_df_ready_to_use.rds')
+#df_raw <- readr::read_rds('../../data/urbanformbr/pca_regression_df/pca_regression_df_ready_to_use.rds')
 
 
 # processing -------
 
 
 tmp_dt <- list(tmp_dt
-                ,data.table::copy(tmp_dt)[,classe := "all"]) %>%
+                ,data.table::copy(tmp_dt)[classe = "all"]) %>%
   data.table::rbindlist() %>%
   .[,lapply(.SD,sum,na.rm = TRUE)
     ,by = .(status,classe,code_urban_concentration)
@@ -39,12 +39,12 @@ tmp_dt <- list(tmp_dt
 
 tmp_dt[classe == "moto" & status == "0-10",]$prop %>% summary()
 tmp_dt[classe == "carro" & status == "0-10",]$prop %>% summary()
-tmp_dt[df_raw,on = c("code_urban_concentration"=
-                       "i_code_urban_concentration")
-       ,`:=`(
-         income  = i.x_wghtd_mean_household_income_per_capita,
-         x_pop_2010 = i.x_pop_2010,
-         y_energy_per_capita = i.y_energy_per_capita)]
+# tmp_dt[df_raw,on = c("code_urban_concentration"=
+#                        "i_code_urban_concentration")
+#        ,`:=`(
+#          income  = i.x_wghtd_mean_household_income_per_capita,
+#          x_pop_2010 = i.x_pop_2010,
+#          y_energy_per_capita = i.y_energy_per_capita)]
 
 
 tmp_dt[,x_log_pop := log(x_pop_2010)]
@@ -57,12 +57,12 @@ tmp_dt1 <- data.table::copy(tmp_dt) %>%
   .[,prop := V1/sum(V1),by = .(code_urban_concentration)] %>%
   .[order(code_urban_concentration),]
 
-tmp_dt1[df_raw,on = c("code_urban_concentration"=
-                       "i_code_urban_concentration")
-       ,`:=`(
-         income  = i.x_wghtd_mean_household_income_per_capita,
-         x_pop_2010 = i.x_pop_2010,
-         y_energy_per_capita = i.y_energy_per_capita)]
+# tmp_dt1[df_raw,on = c("code_urban_concentration"=
+#                        "i_code_urban_concentration")
+#        ,`:=`(
+#          income  = i.x_wghtd_mean_household_income_per_capita,
+#          x_pop_2010 = i.x_pop_2010,
+#          y_energy_per_capita = i.y_energy_per_capita)]
 
 
 ggplot(tmp_dt1[classe == "carro",])+

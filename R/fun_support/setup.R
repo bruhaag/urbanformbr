@@ -86,8 +86,9 @@ if(length(new_packages)>1){install.packages(new_packages) }
 lapply(list.of.packages, require, character.only = TRUE)
 
 # ceramic
-devtools::install_github("lucasmation/microdadosBrasil",force = FALSE)
-library(microdadosBrasil)
+#devtools::install_github("BrunaHaag/microdadosBrasil",force = FALSE)
+#library(microdadosBrasil)
+
 
 
 # options
@@ -119,3 +120,5 @@ rm(new_packages)
 # Clean environment and memory
 
 gc(reset = TRUE)
+
+

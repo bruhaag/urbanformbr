@@ -81,6 +81,7 @@ x_wghtd_mean_household_income_per_capita -> x_street_pop
 }')
 
 
+
 #### test Implications ---------------------
 test <- dagitty::localTests(x = d, data = cov( df_fuel ))
 setDT(test)[p.value > 0.01] %>% nrow() / nrow(test)
@@ -663,6 +664,8 @@ for ( i in names(all_models_specs) ){# i = names(all_models_specs)[1]
 
 
 # # check marginal effects ----------------------
+install.packages('margins')
+install.packages('marginaleffects')
 
 library(ggplot2)
 library(margins)

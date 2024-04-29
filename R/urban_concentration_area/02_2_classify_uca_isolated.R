@@ -5,14 +5,14 @@
 
 # setup -------------------------------------------------------------------
 
-source('R/setup.R')
+source('R/fun_support/setup.R')
 
 
 # read data ---------------------------------------------------------------
 
 # read df with code and names of urban concentration, and codes of each muni
 #..belonging to them
-df_classify_isolated <- readr::read_rds("//storage6/usuarios/Proj_acess_oport/data/urbanformbr/pca_regression_df/pca_regression_df.rds")
+df_classify_isolated <- readr::read_rds("C:\\Users\\haagb\\data\\urbanformbr\\pca_regression_df\\pca_regression_df.rds")
 
 # count the number of munis in each urban concentration
 df_classify_isolated <- df_classify_isolated %>%

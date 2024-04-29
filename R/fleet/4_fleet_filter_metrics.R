@@ -16,10 +16,10 @@ df_shapes <- df_shapes %>%
   dplyr::select(-pop_ibge_total_2010)
 
 # * fleet mean ------------------------------------------------------------------
-df_fleet_age_mean <- readr::read_rds("../../data/urbanformbr/denatran/denatran_mean-fleet-age.rds")
+df_fleet_age_mean <- readr::read_rds("../../data/urbanformbr/denatran/denatran_mean-fleet-age_metrics.rds")
 
 # * fleet class -----------------------------------------------------------------
-df_fleet_age_class <- readr::read_rds("../../data/urbanformbr/denatran/denatran_proportion-vehicle-classe.rds")
+df_fleet_age_class <- readr::read_rds("../../data/urbanformbr/denatran/denatran_proportion-vehicle-classe_metrics.rds")
 
 
 # clean data --------------------------------------------------------------

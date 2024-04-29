@@ -4,7 +4,8 @@
 
 
 source('R/fun_support/setup.R')
-library("landscapemetrics")
+
+library(landscapemetrics)
 
 
 data_folder <- "../../data/urbanformbr/ghsl/BUILT/urban_extent_cutoff_20_raster"

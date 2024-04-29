@@ -1,13 +1,13 @@
 
-# description -------------------------------------------------------------
+# descrição ------------------------------------------------ -------------
 
-# this script downloads, unzips and saves data from the GHSL multitemporal
-# dataset-tile used to create a map at urbanformbr report
-# uca from Belo Horizonte is used
+# este script baixa, descompacta e salva dados do GHSL multitemporal
+# dataset-tile usado para criar um mapa no relatório urbanformbr
+# uca de Blumenau, Caxias do Sul e Londrina é usado
 
-# tile containing belo horizonte: ID 10_13
+# bloco contendo Blumenau, Caxias do Sul e Londrina: ID 9_13
 # link
-# http://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_BUILT_LDSMT_GLOBE_R2018A/GHS_BUILT_LDSMT_GLOBE_R2018A_3857_30/V2-0/tiles/GHS_BUILT_LDSMT_GLOBE_R2018A_3857_30_V2_0_9_13.zip
+# http://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_BUILT_LDSMT_GLOBE_R2018A/GHS_BUILT_LDSMT_GLOBE_R2018A_3857_30/V2-0/tiles/GHS_BUILT_LDSMT_GLOBE_R2018A_3857_30_V2_0 _9_13.zip
 
 # setup -------------------------------------------------------------------
 source("R/fun_support/setup.R")
@@ -37,6 +37,6 @@ f_download_unzip <- function(tile_id){
 
 
 # run function ------------------------------------------------------------
-f_download_unzip()
+f_download_unzip('9_13')
 
 

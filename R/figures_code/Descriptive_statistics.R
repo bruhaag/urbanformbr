@@ -3,6 +3,8 @@ library('data.table')
 library('tidyverse')
 library('vtable')
 
+
+
 ##### --- READ AND PREPARE DATA
 df_UF <- fread("../../data/urbanformbr/consolidated_data/urbanformbr_metrics_full.csv", encoding = 'UTF-8')
 

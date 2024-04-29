@@ -89,7 +89,7 @@ f_create_uca_grids <- function(year) {
 
 # run for mulitple years --------------------------------------------------
 
-anos <- c("1990","2000","2014")
+anos <- c("1975","1990","2000","2014")
 
 furrr::future_walk(anos, ~f_create_uca_grids(.))
 

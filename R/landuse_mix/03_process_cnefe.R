@@ -29,10 +29,10 @@ muni <- 2304400 # Fortaleza
 
 # localização da base de dados do CNEFE
 ### dados baixados pelo script 01_download_cnefe.R
-# cnefe_folder_location <- "../../data/cnefe/"
+cnefe_folder_location <- "../../data-raw/cnefe/"
 
 ### localização dos dados no servidor do IPEA
-cnefe_folder_location <- "//storage6/bases/DADOS/PUBLICO/CNEFE"
+#cnefe_folder_location <- "//storage6/bases/DADOS/PUBLICO/CNEFE"
 
 output_dir <- tempdir()
 
@@ -42,7 +42,7 @@ process_muni <- function(muni) {
 
   # extract urban area name and uf from data
   muni_name <- unique(subset(munis_df, code_muni == muni)$name_muni)
-  muni_uf <- unique(subset(munis_df, code_muni == muni)$abrev_state)
+  muni_uf <- unique(subset(munis_df, code_muni == muni)$abbrev_state)
 
   rds_file <- paste0("../../data/urbanformbr/cnefe/db/", muni_uf, "/", muni, "_", muni_name, "_", muni_uf, ".rds")
 
@@ -55,7 +55,7 @@ process_muni <- function(muni) {
     message(sprintf("Working on city %s / %s", muni_name, muni_uf))
 
     zip_files <- list.files(path = paste0(cnefe_folder_location, "/", muni_uf, "/"), pattern = as.character(muni),
-                              full.names = TRUE)
+                            full.names = TRUE)
 
     lapply(zip_files, unzip, exdir = output_dir)
     txt_files <- list.files(path = output_dir, pattern = ".TXT$", full.names = TRUE)
@@ -82,7 +82,7 @@ process_muni <- function(muni) {
 
 # apply function ----------------------------------------------------------
 
-# process_urban_area(4301602)
-codes <- unique(munis_df$code_muni)
+#process_urban_area(4301602)
+codes <- c(4202404, 4113700, 4305108)
 walk(codes, process_muni)
 

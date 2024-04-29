@@ -27,15 +27,15 @@ f_crop_built_uca <- function(ano){
   # * read files ------------------------------------------------------------
 
   # read uca sf saved at urban_concentration_area/01_1_uca_shapes
-  urban_shapes <- readr::read_rds('../../data/urbanformbr/urban_area_shapes/urban_area_pop_100000_dissolved.rds')
+  urban_shapes <- readr::read_rds('../../data2/urbanformbr/urban_area_shapes/urban_area_pop_100000_dissolved.rds')
 
   # read brasil raster built up area ano
-  raster_br_bua <- raster::raster(sprintf("../../data/urbanformbr/ghsl/BUILT/BRASIL/GHS_BUILT_LDS%s_BRASIL_R2018A_54009_1K_V2_0_raster.tif", ano))
+  raster_br_bua <- raster::raster(sprintf("../../data_raw2/GHSL/BUILT/GHS_BUILT_V_E%s_GLOBE_R2023A_54009_100_V1_0_R9_C13.tif", ano))
 
 
   # * change shape projection -----------------------------------------------
 
-  projection_br_bua <- rgdal::GDALinfo(sprintf("../../data/urbanformbr/ghsl/BUILT/BRASIL/GHS_BUILT_LDS%s_BRASIL_R2018A_54009_1K_V2_0_raster.tif", ano)) %>%
+  projection_br_bua <- rgdal::GDALinfo(sprintf("../../data_raw2/GHSL/BUILT/GHS_BUILT_V_E%s_GLOBE_R2023A_54009_100_V1_0_R9_C13.tif", ano)) %>%
     attr('projection')
 
   # change uca sf projection (using brasil built raster projection)
@@ -85,6 +85,8 @@ f_crop_built_uca <- function(ano){
 
 # run for mulitple years --------------------------------------------------
 
-anos <- c("1990","2000","2014")
+anos <- c("1975","1990","2000","2014")
 
 furrr::future_walk(anos, ~f_crop_built_uca(.))
+
+

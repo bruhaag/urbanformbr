@@ -58,6 +58,3 @@ download_cnefe_uf <- function(state_abbrev) {
 # download_cnefe_uf("RS")
 
 
-
-
-

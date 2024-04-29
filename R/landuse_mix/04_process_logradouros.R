@@ -19,7 +19,7 @@ process_muni_2010 <- function(muni) {
 
   # extract urban area name and uf from data
   muni_name <- unique(subset(munis_df, code_muni == muni)$name_muni)
-  muni_uf <- unique(subset(munis_df, code_muni == muni)$abrev_state)
+  muni_uf <- unique(subset(munis_df, code_muni == muni)$abbrev_state)
 
   gpkg_file <- paste0("../../data/urbanformbr/faces_de_logradouros/2010/", muni_uf, "/", muni, "_", muni_name, "_", muni_uf, ".gpkg")
 
@@ -82,12 +82,12 @@ process_state_2019 <- function(uf) {
 # process_urban_area(4301602)
 # process_urban_area(2211001)
 
-codes <- unique(munis_df$code_muni)
+codes <- c(4202404, 4113700, 4305108)
 walk(codes, process_muni_2010)
 
 # process_state_2019("RS")
 
-ufs <- unique(munis_df$abrev_state)
+ufs <- c('SC', 'PR', 'RS')
 walk(ufs, process_state_2019)
 
 

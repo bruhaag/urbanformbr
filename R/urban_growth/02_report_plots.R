@@ -11,7 +11,7 @@ source("R/urban_growth/02.1_prepare_data.R")
 #' e leapfrog
 
 urban_extent_processed %>%
-  filter(name_uca_case == "porto_alegre_rs") %>%
+  filter(name_uca_case == "blumenau_sc") %>%
   filter(period_start == 1990, period_end == 2014) %>%
   ggplot() +
   geom_sf(aes(fill=growth_type), size = 0.2) +
@@ -19,7 +19,7 @@ urban_extent_processed %>%
   scale_fill_aop(palette = "blue_red", reverse = TRUE) +
   theme_minimal() +
   labs(fill = "tipo",
-       title = "Porto Alegre / RS - expansão urbana entre 1990 e 2014")
+       title = "Blumenau / SC - expansão urbana entre 1990 e 2014")
 
 ggsave(filename = here::here("plots/urbangrowth", "growth_types.png"),
        width = 10, height = 8, units = "cm", dpi = 300, scale = 1.8)

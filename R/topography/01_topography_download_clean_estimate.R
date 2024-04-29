@@ -36,21 +36,23 @@ future::plan(future::multicore, workers = future::availableCores() / 2)
   # * update Renviron -------------------------------------------------------
 
   # Load AOP APIs username and passwords, using aopint package
-  # https://github.com/dhersz/aopint
-  # install.packages("aopint", repos = "https://dhersz.r-universe.dev")
-  library(aopint)
-  aopint::atualizar_renviron()
-  username <- Sys.getenv("EARTHDATA_LOGIN")
-  password <- Sys.getenv("EARTHDATA_PASS")
+  #https://github.com/dhersz/aopint
+  #install.packages("aopint", repos = "https://dhersz.r-universe.dev")
+#remotes::install_github("dhersz/aopint")
+
+library(aopint)
+  #aopint::atualizar_renviron() #ver a necessidade de rodar essa linha de comando
+  username <- Sys.getenv("Brunahaag") #substitui
+  password <- Sys.getenv("Brunahaag@2023") #substitui
 
 
 # read necessary files ----------------------------------------------------
 
-# nameuca <- "abaetetuba"
-# code_uca <- 1500107
+ nameuca <- "blumenau_sc" #substitui
+ code_uca <- 4202404 #substitui
 
 # read urban extent 2014 polygons
-urban_extent <- readr::read_rds("../../data/urbanformbr/ghsl/results/urban_extent_uca_2014_cutoff20.rds")
+urban_extent <- readr::read_rds("../../data/urbanformbr/ghsl/results/urban_extent_uca_2014_cutoff5.rds")
 
 # reproject urbanextent polygon to 4326
 
@@ -158,7 +160,7 @@ f_download_srtm <- function(code_uca) {
 
   rst <- rst %>%
     purrr::discard(is.null)
-
+browser()
   if (length(rst) == 1) {
     rst_layer <- rst[[1]]
   } else {

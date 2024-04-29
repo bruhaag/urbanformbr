@@ -1,7 +1,7 @@
 # description -------------------------------------------------------------
 
-# this script estimates factor analysis for all urban form and street network
-# variables
+# este script estima a análise fatorial para toda a forma urbana e rede viária
+# variáveis
 
 # setup -------------------------------------------------------------------
 
@@ -23,8 +23,8 @@ df_density <- df_density %>%
   dplyr::select(code_urban_concentration, density_pop_02km_2014)
 
 # * land use mix ----------------------------------------------------------
-df_land_mix <- data.table::fread("../../data/urbanformbr/consolidated_data/landuse_mix.csv")
-df_land_mix[, name_uca_case:=NULL]
+#df_land_mix <- data.table::fread("../../data/urbanformbr/consolidated_data/landuse_mix.csv")
+#df_land_mix[, name_uca_case:=NULL]
 
 # * fragmentation compacity -----------------------------------------------
 df_fragmentation <- data.table::fread("../../data/urbanformbr/consolidated_data/fragmentation_compacity.csv")
@@ -53,7 +53,7 @@ df_street <- subset(df_street, name_urban_concentration %in% df_shapes$name_urba
 
 # merge data --------------------------------------------------------------
 df_factor <- dplyr::left_join(df_shapes, df_density) %>%
-  dplyr::left_join(df_land_mix) %>%
+  #dplyr::left_join(df_land_mix) %>%
   dplyr::left_join(df_fragmentation) %>%
   dplyr::left_join(df_street) #%>%
   # dplyr::left_join(df_censo)

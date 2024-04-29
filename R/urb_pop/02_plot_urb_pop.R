@@ -2,15 +2,15 @@
 # load packages-----
 #
 
-rm(list=ls())
-library(ggrepel)
-library(magrittr)
-library(data.table)
-library("geobr")
-source("R/urb_pop/colors_plot.R")
-source("R/urb_pop/aop_style1.R")
-source("R/fun_support/style.R")
-source("R/fun_support/colours.R")
+# rm(list=ls())
+# library(ggrepel)
+# library(magrittr)
+# library(data.table)
+# library("geobr")
+# source("R/urb_pop/colors_plot.R")
+# source("R/urb_pop/aop_style1.R")
+# source("R/fun_support/style.R")
+# source("R/fun_support/colours.R")
 
 mapview::mapviewOptions(platform = 'mapdeck')
 
@@ -20,16 +20,16 @@ options(mc.cores=20)
 # read  -----
 ## read PNAD -----
 
-pnadc <- readr::read_rds("data/pnadc.rds")
+pnadc <- readr::read_rds("C:/Users/haagb/data/pnadc.rds")
 
 ## read Projection----
 
-temp_proj <- readr::read_rds("data/table_6579_ibge.rds")
+temp_proj <- readr::read_rds("C:/Users/haagb/data/table_6579_ibge.rds")
 temp_proj <- temp_proj[,sum(valor),by = ano]
 
 ## read CENSO -----
 
-temp_pop <- readr::read_rds("data/table_202_ibge.rds")
+temp_pop <- readr::read_rds("C:/Users/haagb/data/table_202_ibge.rds")
 temp_pop[,tipo_valor := "total"][,valor := valor/10^6]
 
 # Prep data-----
@@ -74,8 +74,8 @@ ggplot(data = situacao) +
   geom_bar(stat = "identity",
            aes(x = ano, y = valor,fill = situacao_do_domicilio))+
   scale_fill_manual(values = c(
-    as.vector(aop_colors$qualitativas[1])
-    , as.vector(aop_colors$cinzas[3])
+    as.vector(aop_colors[4])
+    , as.vector(aop_colors[3])
   )) +
   facet_wrap(~variavel,ncol=1,scales = "free_y",
              labeller = as_labeller(c('Proporção da população' = "Proporção da população (%)",
@@ -96,10 +96,10 @@ ggplot(data = situacao) +
   guides(fill = guide_legend(override.aes = list(shape = NA)),
          color = FALSE)
 
-dir.create("figures")
-dir.create("figures/urb_pop")
+dir.create("C:/Users/haagb/figures")
+dir.create("C:/Users/haagb/figures/urb_pop")
 
-ggsave("figures/figura_5_urb_pop_oveview.pdf",
+ggsave("C:/Users/haagb/figures/figura_5_urb_pop_oveview.pdf",
        width = 15,height = 15,dpi = 300,units = "cm")
 
 
@@ -110,8 +110,8 @@ options(mc.cores=20)# set number of cores
 
 # add 2020 projection on census 1970 - 2010 data
 
-pop <- readr::read_rds("data/population_muni_ibge.rds")
-pop_proj_2020 <- readr::read_rds("data/table_6579_ibge.rds")
+pop <- readr::read_rds("C:/Users/haagb/data/population_muni_ibge.rds")
+pop_proj_2020 <- readr::read_rds("C:/Users/haagb/data/table_6579_ibge.rds")
 pop_muni <- list(pop,pop_proj_2020) %>% data.table::rbindlist(use.names = TRUE
                                                               ,fill = TRUE)
 
@@ -120,7 +120,7 @@ pop_muni[,c("situacao_do_domicilio",
             "sexo_codigo","sexo") := NULL]
 
 # read amc
-amc_muni <- readr::read_rds("data/comparable_areas_ibge.rds")
+amc_muni <- readr::read_rds("C:/Users/haagb/data/comparable_areas_ibge.rds")
 # merge amc data to muni_data
 pop_muni[amc_muni,on = c("municipio_codigo" = "code_muni_2010"),
          code_amc := i.code_amc]

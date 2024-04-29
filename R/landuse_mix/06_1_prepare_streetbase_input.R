@@ -53,7 +53,7 @@ load_missing <- function(muni) {
 
 
     setcolorder(cnefe_clean, c("cnefe_id", "country", "state", "city", "address", "address2", "borough", "post_code"))
-    setnames(cnefe_clean, c("cnefe_id", "country", "state", "city", "address", "address2", "neighbourhood", "post_code", "landuse_id", "landuse_description"))
+    setnames(cnefe_clean, c("cnefe_id", "country", "state", "city", "address", "address2", "neighbourhood", "landuse_id", "landuse_description"))
 
     return(cnefe_clean)
   } else {

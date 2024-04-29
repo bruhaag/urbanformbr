@@ -96,9 +96,10 @@ anp3[uca, on = "code_urban_concentration"
      , name_urban_concentration := i.name_urban_concentration]
 
 anp3[order(tep,decreasing = TRUE)]
-anp3[,tep := as.numeric(tep)/pop_2010]
+anp3[,tep := as.numeric(tep)/pop_2022]
 anp3 <- anp3[,.SD,.SDcols = c("code_urban_concentration","tep")]
 
 # 4) save-----
 readr::write_rds(anp3,"../../data/urbanformbr/fuel/anp_energy-2010_metrics.rds")
+
 

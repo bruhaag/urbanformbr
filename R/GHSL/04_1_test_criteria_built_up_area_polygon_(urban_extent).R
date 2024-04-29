@@ -1,27 +1,30 @@
-# description -------------------------------------------------------------
+# obs Bruna - Script não rodado por completo
+#Problema no arquivo da linha 472
 
-# this script tests criteria for defining built-up area polygon (urban extent)
-#..to be compared between Urban Concentration Areas (uca)
-# built-up area raster (GSHL) used is 1km x 1km pixel
-# testing is done in two steps
+# descrição -------------------------------------------------------------
 
-# 1. preliminary test for selected group of ucas:
-## define different cutoffs (>0%, 10%, 25%, 50%) that constitute built-up
-##..area polygon for a group of ucas
-## generate maps (1975 & 2014) to be analysed by AOP team
-# ucas: for,bsb,bhz,ctb,poa,rio,sp,nat,man,vit
+# este script testa critérios para definição do polígono de área construída (extensão urbana)
+#..a ser comparado entre Áreas de Concentração Urbana (uca)
+# raster de área construída (GSHL) usado é pixel de 1 km x 1 km
+# teste é feito em duas etapas
 
-# 2. comparison between cutoffs and "ground truth" (IBGE urban footprint)
-## based on preview analysis, compare 10% & 25% cutoffs with IBGE urban..
-##..footprint.
-## check which cutoff provides the least amount of difference when compared to
-##.. IBGE's area
+# 1. teste preliminar para grupo selecionado de ucas:
+## definir diferentes pontos de corte (>0%, 10%, 25%, 50%) que constituem acúmulo
+##..polígono de área para um grupo de ucas
+## gerar mapas (1975 e 2014) para serem analisados pela equipe AOP
+#ucas: for,bsb,bhz,ctb,poa,rio,sp,nat,man,vit
+
+# 2. comparação entre pontos de corte e “verdade básica” (pegada urbana do IBGE)
+## com base na análise prévia, compare os pontos de corte de 10% e 25% com os valores urbanos do IBGE.
+##..pegada.
+## verifique qual ponto de corte fornece a menor diferença quando comparado com
+##.. Área do IBGE
 
 # setup -------------------------------------------------------------------
 
-source("R/setup.R")
-source('R/style.R')
-source('R/colours.R')
+source("R/fun_support/setup.R")
+source('R/fun_support/style.R')
+source('R/fun_support/colours.R')
 
 # directory ---------------------------------------------------------------
 
@@ -36,16 +39,17 @@ ghsl_built_dir <- "../../data/urbanformbr/ghsl/BUILT/UCA/"
 
 files_preliminary <- dir(
   "../../data/urbanformbr/ghsl/BUILT/UCA/",
-  pattern = "(1975|2014).*(sao_paulo|fortaleza|brasilia|curitiba|belo_horizonte|rio_de_janeiro|bage|porto_alegre).*\\.tif$"
+  pattern = "(1975|1990|2000|2014).*(4202404|4113700|4305108).*\\.tif$"
 )
 
-#input <- files_preliminary
+input <- files_preliminary
 
 # * 1.2 define function ---------------------------------------------------
 
 f_preliminary <- function(input) {
 
   # read all raster files from one year in a list
+  #browser()
   bua_uca <- purrr::map(input, ~ raster::raster(paste0(ghsl_built_dir, .)))
 
   # extract the year
@@ -58,7 +62,9 @@ f_preliminary <- function(input) {
   uca_name <- paste0(uca_name,'_',anos)
 
   # rename each raster in the list
+  #browser()
   names(bua_uca) <- uca_name
+
 
   #str(bua_uca,max.level = 1)
 
@@ -77,14 +83,14 @@ f_preliminary <- function(input) {
     # create columns classifying area based on cutoff values (0,25,50%)
     dplyr::mutate(
       cutoff_20 = data.table::fcase(
-        bua_value >= 20, "Extensão Urbana (>=20%)",
-        default = "Ext. Não-Urb. (<20%)"
+        bua_value >= 5, "Extensão Urbana (>=5%)",
+        default = "Ext. Não-Urb. (<5%)"
       )
     ) %>%
     dplyr::mutate(
       cutoff_20 = factor(
         cutoff_20,
-        levels = c("Extensão Urbana (>=20%)","Ext. Não-Urb. (<20%)")
+        levels = c("Extensão Urbana (>=5%)","Ext. Não-Urb. (<5%)")
           )
     )
 
@@ -106,7 +112,7 @@ f_preliminary <- function(input) {
   }
 
   # create column name vector
-  vetor <- paste0('cutoff_',c(20))
+  vetor <- paste0('cutoff_',c(5))
   # generate converted list of sf df
   #a <- pmap(list(variavel = vetor), f_group_summarise, base = bua_pol$bage_rs_1975)
 
@@ -117,7 +123,7 @@ f_preliminary <- function(input) {
 
   f_names <- function(base){
 
-    rlang::set_names(base, paste0('cutoff_',c(20)))
+    rlang::set_names(base, paste0('cutoff_',c(5)))
 
   }
 
@@ -145,7 +151,7 @@ f_preliminary <- function(input) {
 
   bua_plots <- purrr::map(
     bua_convert,
-    ~purrr::modify_in(., 1, ~f_plot(., 'cutoff_20'))
+    ~purrr::modify_in(., 1, ~f_plot(., 'cutoff_5'))
     )
 
   bua_reduce <- purrr::map(bua_plots, ~purrr::reduce(., `/`))
@@ -226,7 +232,8 @@ files_compare <- dir(
   pattern = "(2014).*\\.tif$"
 )
 
-#input <- files_compare
+input <- files_compare
+print(input)
 
 # * 2.2 define function ---------------------------------------------------
 
@@ -263,13 +270,13 @@ f_compare <- function(){
       dplyr::rename(bua_value = 1) %>%
       # create columns classifying area based on cutoff values (20,25%)
       dplyr::mutate(
-        cutoff_20 = data.table::fcase(
-          bua_value >= 20, 'Construída',
-          bua_value < 20, 'Não construída'
+        cutoff_5 = data.table::fcase(
+          bua_value >= 5, 'Construída',
+          bua_value < 5, 'Não construída'
         ),
-        cutoff_25 = data.table::fcase(
-          bua_value >= 25, 'Construída',
-          bua_value < 25, 'Não construída'
+        cutoff_10 = data.table::fcase(
+          bua_value >= 10, 'Construída',
+          bua_value < 10, 'Não construída'
         )
       )
 
@@ -290,7 +297,7 @@ f_compare <- function(){
   }
 
   # create column name vector
-  vetor <- paste0('cutoff_',c(20,25))
+  vetor <- paste0('cutoff_',c(5,10))
   # generate converted list of sf df
 
   bua_convert <- map(bua_pol,
@@ -299,7 +306,7 @@ f_compare <- function(){
 
   f_names <- function(base){
 
-    rlang::set_names(base, paste0('cutoff_',c(20,25)))
+    rlang::set_names(base, paste0('cutoff_',c(5,10)))
 
   }
 
@@ -433,8 +440,8 @@ f_compare <- function(){
     ,
     `:=`(
       min_diff = dplyr::case_when(
-        diff_area_20 < diff_area_25 ~ "cutoff_20",
-        T ~ 'cutoff_25'
+        diff_area_5 < diff_area_25 ~ "cutoff_5",
+        T ~ 'cutoff_10'
         )
       )
   ]
@@ -488,7 +495,7 @@ f_compare <- function(){
     ggplot() +
     geom_point(
       aes(
-        x = diff_area_25, y = diff_area_20,
+        x = diff_area_10, y = diff_area_5,
         fill = as.factor(name_region),
         size = pop2015,
         #shape = min_diff
@@ -500,7 +507,7 @@ f_compare <- function(){
     scale_size(range = c(1, 20)) +
     #viridis::scale_fill_viridis(discrete = T, option = 'magma') +
         labs(
-      x = 'Difference area 25%', y = 'Difference area 20%', fill = 'Region',
+      x = 'Difference area 10%', y = 'Difference area 5%', fill = 'Region',
       size = 'Population (100.000)'
     ) +
     aop_style() +
@@ -524,7 +531,7 @@ f_compare <- function(){
     ggplot() +
     geom_point(
       aes(
-        x = diff_area_25, y = diff_area_20,
+        x = diff_area_10, y = diff_area_5,
         fill = as.factor(min_diff),
         size = pop2015,
         #shape = min_diff
@@ -536,7 +543,7 @@ f_compare <- function(){
     scale_size(range = c(1, 20)) +
     #viridis::scale_fill_viridis(discrete = T, option = 'magma') +
     labs(
-      x = 'Difference area 25%', y = 'Difference area 20%',
+      x = 'Difference area 10%', y = 'Difference area 5%',
       fill = 'Threshold minimizing <br> difference',
       size = 'Population (100.000)'
     ) +
@@ -550,12 +557,12 @@ f_compare <- function(){
 
   # save plot
   ggplot2::ggsave(
-    filename = paste0('../../data/urbanformbr/ghsl/figures/', 'difference_cutoff_20_25_ibge_threshold', '.png'),
+    filename = paste0('../../data/urbanformbr/ghsl/figures/', 'difference_cutoff_5_10_ibge_threshold', '.png'),
     dpi = 300, device = 'png'
   )
 
-  weighted.mean(df_bua_areas$diff_area_20, w = df_bua_areas$pop2015, na.rm = T)
-  weighted.mean(df_bua_areas$diff_area_25, w = df_bua_areas$pop2015, na.rm = T)
+  weighted.mean(df_bua_areas$diff_area_5, w = df_bua_areas$pop2015, na.rm = T)
+  weighted.mean(df_bua_areas$diff_area_10, w = df_bua_areas$pop2015, na.rm = T)
 
   # check frequency (absolute and proportion)
   table(df_bua_areas$min_diff)
@@ -946,5 +953,5 @@ f_compare <- function(){
 
 
 # * 2.3 run function ------------------------------------------------------
-f_compare(input = files_compare)
+f_compare()
 

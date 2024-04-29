@@ -1,13 +1,13 @@
-# description -------------------------------------------------------------
+# descrição -------------------------------------------------------------
 
-# this script
-# i. reads population raster data from GHS-BUILT-BRASIL (1km resolution)
-#..saved previously at R/GHSL/01_2_pop_filter_save_br_data.R
-# ii. crops and masks spatially using urban concentration areas (uca) shapes by IBGE
+# este script
+#i. lê dados raster populacionais do GHS-BUILT-BRASIL (resolução de 1km)
+#..salvo anteriormente em R/GHSL/01_2_pop_filter_save_br_data.R
+#ii. corta espacialmente utilizando formatos de áreas de concentração urbana (uca) do IBGE
 ## devtools::install_github("ipeaGIT/geobr", subdir = "r-package")
-# iii. saves raster for each uca and each year
+#iii. salva raster para cada uca e cada ano
 
-# Obs.: uca shapes were previously saved at R/urban_concentration_area/01_1_uca_shapes.R
+# Obs.: os shape uca foram salvos anteriormente em R/urban_concentration_area/01_1_uca_shapes.R
 
 
 # setup -------------------------------------------------------------------
@@ -84,6 +84,7 @@ f_crop_pop_uca <- function(ano){
 
 # run for mulitple years --------------------------------------------------
 
-anos <- c("1990","2000","2015")
+anos <- c("1975","1990","2000","2015")
 
 furrr::future_walk(anos, ~f_crop_pop_uca(.))
+

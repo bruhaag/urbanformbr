@@ -24,13 +24,13 @@ urban_growth_df <- read_rds("../../data/urbanformbr/urban_growth/urban_growth.rd
 city_size_df <- urban_growth_df %>%
   ungroup() %>%
   filter(period_start == 2000, period_end == 2014) %>%
-  select(code_muni, name_uca_case, pop = pop_end, built = built_end) %>%
+  select(name_uca_case, pop = pop_end, built = built_end) %>%
   distinct() %>%
   mutate(size = if_else(pop >= 1000000, "grande", "médio")) %>%
-  select(code_muni, name_uca_case, size)
+  select(name_uca_case, size)
 
 urban_growth_df <- left_join(urban_growth_df, city_size_df,
-                             by = c("code_muni", "name_uca_case"))
+                             by = "name_uca_case")
 
 # sinaliza observações como outliers
 urban_growth_df <- urban_growth_df %>%

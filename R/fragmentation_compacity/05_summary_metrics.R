@@ -1,4 +1,5 @@
-#' Script para preparar plots para o relatório
+# Script para preparar plots para o relatório
+
 
 source('R/fun_support/setup.R')
 source("R/fun_support/colours.R")
@@ -6,6 +7,8 @@ source("R/fun_support/colours.R")
 library(ggspatial)
 mapviewOptions(platform = "leaflet")
 
+
+#Bruna - falta o arquivo urbanformbr_metrics_full.csv
 metrics_df <- readr::read_csv(file = '../../data/urbanformbr/consolidated_data/urbanformbr_metrics_full.csv')
 
 # filtrar apenas cidades grandes
@@ -24,7 +27,7 @@ metrics_filtered_df <- metrics_long_df %>%
   arrange(desc(value)) #%>%
   # slice(c(1, n()/2, n()))
 
-
+#Bruna - substituir as cidades
 chosen_cities <- tribble(
   ~name_uca_case, metric,
   "campo_grande"   , "x_compacity_2014",
@@ -37,6 +40,7 @@ chosen_cities <- tribble(
 )
 
 # City Centroids
+# Bruna - o arquivo grid_uca_2014_cutoff20.rds pode ser substituido pelo grid_uca_2014_cutoff5.rds
 ghsl_df <- read_rds("../../data/urbanformbr/ghsl/results/grid_uca_2014_cutoff20.rds") %>%
   st_transform(crs = 4326)
 
@@ -46,6 +50,7 @@ centroids_df <- ghsl_df %>%
   slice(1) %>%
   st_centroid()
 
+#Bruna - substituir as cidades e a posição geográfica
 centroids_df <- tribble(
   ~code_urban_concentration, ~name_uca_case, ~lat, ~lon,
   3106200, "belo_horizonte_mg", -19.958544536819858, -43.965403455388696,
@@ -65,6 +70,7 @@ centroids_df <- tribble(
 # metric_long_name <- "Compacidade"
 # size = 50000
 
+#Bruna - arquivo ok
 ## find bounding box
 cities_sf <- st_read("../../data/urbanformbr/fragmentation_compacity/compacity_2014.gpkg") %>%
   filter(code_urban_concentration %in% metrics_filtered_df$i_code_urban_concentration)

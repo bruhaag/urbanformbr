@@ -1,5 +1,8 @@
 # this scripts prepare the data for the DAG and regression models
 
+install.packages("data.table")
+install.packages("readr")
+install.packages("tidyverse")
 library(data.table)
 library(readr)
 library(tidyverse)

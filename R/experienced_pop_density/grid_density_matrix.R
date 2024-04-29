@@ -63,8 +63,8 @@ options( future.globals.maxSize = 10000 * 1024 ^ 2 )
 future::plan(strategy = 'multisession', workers=10)
 
 areas <- unique(df_urb_concentration$code_urban_concentration)
-s <- "4316907" ## Santa Maria, RS
-s <- "3550308" ## Sao paulo, SP
+s <- "4202404" ## Blumenau, SC
+s <- "4113700" ## Londrina, Pr
 
 for( s in areas[1:3]){ # states
 

@@ -19,5 +19,5 @@ metrics_df <- left_join(fragmentation_df, compacity_df)
 
 write_csv(metrics_df, file = "../../data/urbanformbr/consolidated_data/fragmentation_compacity.csv")
 
-# read_csv("../../data/urbanformbr/consolidated_data/fragmentation_compacity.csv") %>% View()
+read_csv("../../data/urbanformbr/consolidated_data/fragmentation_compacity.csv") %>% View()
 

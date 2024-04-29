@@ -1,13 +1,13 @@
-# description -------------------------------------------------------------
+# descrição ------------------------------------------------ -------------
 
-# this script
-# i. reads data from GHS-BUILT (1km resolution)
-# ii. filter data from Brazil polygon
-# iii. saves brasil raster .tif for for future cleaning and manipulation
+# este script
+# i. lê dados do GHS-BUILT (resolução de 1km ou 250 - substituir na linha 24)
+# ii. filtrar dados do polígono Brasil
+# iii. salva brasil raster .tif para futura limpeza e manipulação
 
 # setup -------------------------------------------------------------------
 
-source('R/setup.R')
+source('R/fun_support/setup.R')
 
 # directory ---------------------------------------------------------------
 
@@ -81,3 +81,4 @@ f_save_brasil_raster <- function(input, output){
 purrr::walk2(.x = files_input, .y = files_output_raster, function(x,y)
   f_save_brasil_raster(input = x, output = y)
 )
+

@@ -1,20 +1,20 @@
-# description -------------------------------------------------------------
+# descrição -------------------------------------------------------------
 
-# this script
-# 1. downloads urban concentrations areas (uca) delimited by IBGE
-# 2. dissolve their internal limits
-# 3. filters uca
-  # 3.1 with pop >= 100000
-  # 3.2 exclude uca's that share borders with international urban areas (listed below)
-    # 4322400 Uruguaiana RS
-    # 4108304 Foz do Iguaçu PR
-    # 5003207 Corumbá MS
-# 4. saves shapefiles as .rds for future use @urbanformbr
+# este script
+# 1. baixa áreas de concentração urbana (uca) delimitadas pelo IBGE
+# 2. dissolver seus limites internos
+# 3. filtros uca
+# 3.1 com pop >= 100000
+# 3.2 exclui ucas que fazem fronteira com áreas urbanas internacionais (listadas abaixo)
+#4322400 Uruguaiana RS
+#4108304 Foz do Iguaçu PR
+#5003207 Corumbá-MS
+#4. salva shapefiles como .rds para uso futuro @urbanformbr
 
 # setup -------------------------------------------------------------------
 
 # load libraries
-source('R/fun_support/setup.R')
+#source('R/fun_support/setup.R')
 
 # load functions to dissolve polygons
 source('R/fun_support/dissolve_polygons.R')

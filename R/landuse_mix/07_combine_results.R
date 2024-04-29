@@ -10,7 +10,7 @@ source('R/fun_support/setup.R')
 # list of Brazilian municipalities
 munis_df <- geobr::lookup_muni("all")
 ucas_df <- geobr::read_urban_concentrations() %>% st_set_geometry(NULL)
-urban_areas <- read_rds("../../data/urbanformbr/ghsl/results/urban_extent_uca_2014_cutoff20.rds") %>% st_set_geometry(NULL)
+urban_areas <- read_rds("../../data/urbanformbr/ghsl/results/urban_extent_uca_2014_cutoff5.rds") %>% st_set_geometry(NULL)
 
 # muni <- 4301602 # Bagé
 # muni <- 4314407 # Pelotas

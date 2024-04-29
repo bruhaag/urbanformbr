@@ -1,26 +1,25 @@
-# description -------------------------------------------------------------
+# descrição -------------------------------------------------------------
 
-# this script downloads, unzips and saves data from the GHSL datasets:
-## GHS-FUA R2019A: Functional Urban Areas (derived from UCDB R2019A)
-## GHS-UCDB R2019A: Urban Centre Database
-## GHS-BUILT R2018A: Built-Up Area grid, Landsat
-## GHS-POP R2019A: Population grid
-## GHS-SMOD R2019A: Settlement layers (degree of urbanization)...
-#...from GHS-POP and BUILT
+# este script baixa, descompacta e salva dados dos conjuntos de dados GHSL:
+## GHS-FUA R2019A: Áreas Urbanas Funcionais (derivadas de UCDB R2019A)
+## GHS-UCDB R2019A: Banco de dados de centros urbanos
+## GHS-BUILT R2018A: Grade de área construída, Landsat
+## GHS-POP R2019A: Grade populacional
+## GHS-SMOD R2019A: Camadas de assentamento (grau de urbanização)
+#...de GHS-POP e GHS-BUILT (área construída)
 
-# OBs.: layers's temporal dimensions
+# OBs.: dimensões temporais das camadas
 ## GHS-FUA R2019A: 2015
 ## GHS-UCDB R2019A: multitemporal (1975-1990-2000-2014)
 ## GHS-BUILT R2018A: multitemporal (1975-1990-2000-2014)
 ## GHS-POP R2019A: multitemporal (1975-1990-2000-2015)
 ## GHS-SMOD R2019A: multitemporal (1975-1990-2000-2015)
 
-# Obs.2: some layers have multiple resolutions available
+# Obs.2: algumas camadas possuem múltiplas resoluções disponíveis
 
-# steps:
-# i. download data
-# ii. unzip and save data at //storage6/usuarios/Proj_acess_oport/data-raw
-
+# passos:
+# eu. baixar dados
+#ii. descompacte e salve os dados em //storage6/usuarios/Proj_acess_oport/data-raw
 # setup -------------------------------------------------------------------
 
 source('R/fun_support/setup.R')
@@ -45,16 +44,16 @@ temp <- tempfile()
 # * fua -------------------------------------------------------------------
 
 
-#download.file('http://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_FUA_UCDB2015_GLOBE_R2019A/V1-0/GHS_FUA_UCDB2015_GLOBE_R2019A_54009_1K_V1_0.zip',
-#              temp)
-#unzip(zipfile = temp, exdir = paste0(ghsl_dir,"/fua"))
+download.file('http://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_FUA_UCDB2015_GLOBE_R2019A/V1-0/GHS_FUA_UCDB2015_GLOBE_R2019A_54009_1K_V1_0.zip',
+              temp)
+unzip(zipfile = temp, exdir = paste0(ghsl_dir,"/fua"))
 
 
 # * ucdb ------------------------------------------------------------------
 
-#download.file('http://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_STAT_UCDB2015MT_GLOBE_R2019A/V1-2/GHS_STAT_UCDB2015MT_GLOBE_R2019A.zip',
-#              temp)
-#unzip(zipfile = temp, exdir = paste0(ghsl_dir,"/ucdb"))
+download.file('https://jeodpp.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_STAT_UCDB2015MT_GLOBE_R2019A/V1-2/GHS_STAT_UCDB2015MT_GLOBE_R2019A_V1_2.zip',
+              temp)
+unzip(zipfile = temp, exdir = paste0(ghsl_dir,"/ucdb"))
 
 
 # * manage directory ------------------------------------------------------
@@ -172,12 +171,15 @@ options(future.globals.maxSize = Inf)
 
 # * built -----------------------------------------------------------------
 
-# res 30m
-download.file('http://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_BUILT_LDSMT_GLOBE_R2018A/GHS_BUILT_LDSMT_GLOBE_R2018A_3857_30/V2-0/GHS_BUILT_LDSMT_GLOBE_R2018A_3857_30_V2_0.zip',
-              temp)
-unzip(zipfile = temp, exdir = paste0(ghsl_dir,"/BUILT"))
+# res 30m (baixado manualmente, pois através do código não estava baixando)
+#download.file('http://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_BUILT_LDSMT_GLOBE_R2018A/GHS_BUILT_LDSMT_GLOBE_R2018A_3857_30/V2-0/GHS_BUILT_LDSMT_GLOBE_R2018A_3857_30_V2_0.zip',
+#               temp)
+#unzip(zipfile = temp, exdir = paste0(ghsl_dir,"/BUILT"))
 
 #ATTENTION: BUILT res 250 or 1K: USE YEAR 2014 (not 2015)
+
+#OBSERVAÇÃO BRUNA - TODOS OS ARQUIVOS FORAM BAIXADOS MANUALMENTE
+#A FUNÇÃO ESTÁ CORRETA PORÉM ESTÁ DANDO ERRO AO BAIXAR
 
 # res 250
 furrr::future_walk(.x = c(1975,1990,2000,2014), function(x)
