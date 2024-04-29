@@ -1,14 +1,16 @@
-# description -------------------------------------------------------------
+#obs Bruna: Script não foi rodado
 
-# this script compares population from censo and ghsl in 2015 to see if ghsl pop
-#..data can be used to estimate pop geom growth (1975-2015) at pca & regression
-# analysis
+# descrição -------------------------------------------------------------
 
-# ghsl pop estimates were calculated at R/GHSL/03_2_pop_estimate_built_up_area
+# este script compara a população do censo e do ghsl em 2015 para ver se o ghsl pop
+#..data pode ser usado para estimar o crescimento do pop geom (1975-2015) em pca e regressão
+# análise
+
+# estimativas de pop ghsl foram calculadas em R/GHSL/03_2_pop_estimate_built_up_area
 
 # setup -------------------------------------------------------------------
 
-source('R/setup.R')
+source('R/fun_support/setup.R')
 
 
 # read data ---------------------------------------------------------------
@@ -89,12 +91,12 @@ model_log10 <- lm(log10(pop_censo_2015) ~ log10(pop_ghsl_2015), data = df_final)
 summary(model)
 summary(model_log10)
 
-# Results: results suggest that at 95% confidence level, there is no significant
-# difference between censo's and ghsl's population data
-# given the p-value is greater than 0.05, we can accept the null hypothesis that the
-# two means (censo's and ghsl's pop) are equal
+# Resultados: os resultados sugerem que no nível de confiança de 95%, não há
+# diferença entre os dados populacionais do censo e do ghsl
+# dado que o valor p é maior que 0,05, podemos aceitar a hipótese nula de que o
+#duas médias (censo's e ghsl's pop) são iguais
 
-# Conclusion: results suggest that there is no statistical significant difference in
-# using ghsl's population data to estimate population geometric growth
+# Conclusão: os resultados sugerem que não há diferença estatisticamente significativa
+# usando dados populacionais do ghsl para estimar o crescimento geométrico populacional
 
 

@@ -1,7 +1,8 @@
-# description -------------------------------------------------------------
+#obs Bruna - Script não rodado, arquivo faltando
+# descrição ------------------------------------------------ -------------
 
-# this script cleans pop data from ghsl (1975 and 2015) and estimates geometric
-#..pop growth between these years to be used at the regression analysis
+# este script limpa dados pop do ghsl (1975 e 2015) e faz estimativas geométricas
+#..crescimento pop entre esses anos para ser usado na análise de regressão
 
 # setup -------------------------------------------------------------------
 source('R/fun_support/setup.R')

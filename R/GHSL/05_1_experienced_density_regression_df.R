@@ -1,13 +1,13 @@
 
-# description -------------------------------------------------------------
-# this script estimates experienced built-up area (bua) & population density for
-#..each uca's urban extent (urban concentraion area (at least 20% built-up: 184 ucas)
+# descrição ------------------------------------------------ -------------
+# este script estima a área construída experiente (bua) e a densidade populacional para
+#..extensão urbana de cada uca (área de concentração urbana (pelo menos 20% edificada: 184 ucas)
 
-# the script estimates densities (bua & pop) for 1975 & 2014:
-# 1. each 1km x 1km grid cell in each uca's urban extent (saved at R/GHSL/04_3_create_uca_grids)
-# 2. the densities weighted mean for each uca
+# o script estima densidades (bua e pop) para 1975 e 2014:
+# 1. cada célula de grade de 1km x 1km na extensão urbana de cada uca (salvo em R/GHSL/04_3_create_uca_grids)
+# 2. a média ponderada das densidades para cada uca
 
-# experienced densities for 1, 2, 5 and 10 km are estimated for all the above
+# densidades experimentadas para 1, 2, 5 e 10 km são estimadas para todos os itens acima
 
 # setup -------------------------------------------------------------------
 

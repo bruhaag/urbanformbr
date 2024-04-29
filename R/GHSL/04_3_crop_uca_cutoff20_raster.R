@@ -1,9 +1,9 @@
-# description -------------------------------------------------------------
+# descrição ------------------------------------------------ -------------
 
-# this script crops and saves raster for each urban extent (cutoff 20%)
-#..containing, for every year:
-# i) built-up area data
-# ii) population
+# este script recorta e salva raster para cada extensão urbana (corte de 5%)
+#..contendo, para cada ano:
+# i) dados de área construída
+#ii) população
 
 # setup -------------------------------------------------------------------
 
@@ -15,14 +15,14 @@ future::plan(future::multicore, workers = future::availableCores() / 2)
 
 # define function ---------------------------------------------------------
 
-#ano <- 1990
+#ano <- 1975
 
-f_create_uca_raster_cutoff20 <- function(ano){
+f_create_uca_raster_cutoff5 <- function(ano){
 
-  # read urban extent (cutoff 20%) polygon for every uca (saved at GHSL/04_1)
-  df_pol_cutoff20 <- readr::read_rds(sprintf("../../data/urbanformbr/ghsl/results/urban_extent_uca_%s_cutoff20.rds", ano))
+  # read urban extent (cutoff 5%) polygon for every uca (saved at GHSL/04_1)
+  df_pol_cutoff5 <- readr::read_rds(sprintf("../../data/urbanformbr/ghsl/results/urban_extent_uca_%s_cutoff5.rds", ano))
 
-  codigos <- df_pol_cutoff20$code_urban_concentration
+  codigos <- df_pol_cutoff5$code_urban_concentration
 
   furrr::future_walk(
     codigos,
@@ -35,8 +35,8 @@ f_create_uca_raster_cutoff20 <- function(ano){
         ano_pop <- ano
       }
 
-      # * subset df_cutoff20 ---------------------------------------------------
-      df_cutoff20_subset <- subset(df_pol_cutoff20, code_urban_concentration == code_uca)
+      # * subset df_cutoff5 ---------------------------------------------------
+      df_cutoff5_subset <- subset(df_pol_cutoff5, code_urban_concentration == code_uca)
 
       # * read raster -----------------------------------------------------------
 
@@ -50,28 +50,28 @@ f_create_uca_raster_cutoff20 <- function(ano){
       # * crop & mask raster ----------------------------------------------------
 
       # * * built up area -------------------------------------------------------
-      raster_bua <- raster::crop(raster_bua, df_cutoff20_subset)
+      raster_bua <- raster::crop(raster_bua, df_cutoff5_subset)
 
-      raster_bua <- raster::mask(raster_bua, df_cutoff20_subset)
+      raster_bua <- raster::mask(raster_bua, df_cutoff5_subset)
 
       # * * population ----------------------------------------------------------
-      raster_pop <- raster::crop(raster_pop, df_cutoff20_subset)
+      raster_pop <- raster::crop(raster_pop, df_cutoff5_subset)
 
-      raster_pop <- raster::mask(raster_pop, df_cutoff20_subset)
+      raster_pop <- raster::mask(raster_pop, df_cutoff5_subset)
 
 
       # save data ---------------------------------------------------------------
       # built up area
       raster::writeRaster(
         x = raster_bua,
-        filename = sprintf("../../data/urbanformbr/ghsl/BUILT/urban_extent_cutoff_20_raster/GHS_BUILT_LDS%s_%s_urban_extent_cutoff_20_1K_raster.tif", ano, code_uca),
+        filename = sprintf("../../data/urbanformbr/ghsl/BUILT/urban_extent_cutoff_5_raster/GHS_BUILT_LDS%s_%s_urban_extent_cutoff_5_1K_raster.tif", ano, code_uca),
         overwrite = T
       )
 
       # population
       raster::writeRaster(
         x = raster_pop,
-        filename = sprintf("../../data/urbanformbr/ghsl/POP/urban_extent_cutoff_20_raster/GHS_POP_E%s_%s_urban_extent_cutoff_20_1K_raster.tif", ano_pop, code_uca),
+        filename = sprintf("../../data/urbanformbr/ghsl/POP/urban_extent_cutoff_5_raster/GHS_POP_E%s_%s_urban_extent_cutoff_5_1K_raster.tif", ano_pop, code_uca),
         overwrite = T
       )
 
@@ -83,8 +83,8 @@ f_create_uca_raster_cutoff20 <- function(ano){
 
 # run for mulitple years --------------------------------------------------
 
-anos <- c("1990","2000","2014")
+anos <- c("1975","1990","2000","2014")
 
-furrr::future_walk(anos, ~f_create_uca_raster_cutoff20(.))
+furrr::future_walk(anos, ~f_create_uca_raster_cutoff5(.))
 
 

@@ -1,5 +1,6 @@
 # descrição -------------------------------------------------------------
 
+#código novo
 # este script
 # i. lê dados do GHS-BUILT (resolução de 100m)
 # ii. filtrar dados do polígono tile 9_13 (Sul)

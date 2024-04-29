@@ -1,7 +1,7 @@
-# description -------------------------------------------------------------
+# descrição ------------------------------------------------ -------------
 
-# this script reads raster data from GHSL population and build area datasets
-# and converts them to a grided vector data
+# este script lê dados raster da população GHSL e constrói conjuntos de dados de área
+# e os converte em dados vetoriais em grade
 # setup -------------------------------------------------------------------
 
 source('R/fun_support/setup.R')
@@ -16,7 +16,7 @@ future::plan(future::multicore, workers = future::availableCores() / 2)
 
 f_create_uca_grids <- function(year) {
 
-  urban_areas <- read_rds(sprintf("../../data/urbanformbr/ghsl/results/urban_extent_uca_%s_cutoff20.rds", year))
+  urban_areas <- read_rds(sprintf("../../data/urbanformbr/ghsl/results/urban_extent_uca_%s_cutoff5.rds", year))
 
   # code_uca = 1501709
   # name_uca = "braganca"
@@ -26,11 +26,11 @@ f_create_uca_grids <- function(year) {
     urban_areas$name_uca_case,
     function(code_uca, name_uca) {
 
-      raster_built <- sprintf("../../data/urbanformbr/ghsl/BUILT/urban_extent_cutoff_20_raster/GHS_BUILT_LDS%s_%s_urban_extent_cutoff_20_1K_raster.tif", year, code_uca)
+      raster_built <- sprintf("../../data/urbanformbr/ghsl/BUILT/urban_extent_cutoff_5_raster/GHS_BUILT_LDS%s_%s_urban_extent_cutoff_5_1K_raster.tif", year, code_uca)
 
       if (year == 2014) {y <- 2015} else {y <- year}
 
-      raster_pop <- sprintf("../../data/urbanformbr/ghsl/POP/urban_extent_cutoff_20_raster/GHS_POP_E%s_%s_urban_extent_cutoff_20_1K_raster.tif", y, code_uca)
+      raster_pop <- sprintf("../../data/urbanformbr/ghsl/POP/urban_extent_cutoff_5_raster/GHS_POP_E%s_%s_urban_extent_cutoff_5_1K_raster.tif", y, code_uca)
 
 
       if (file.exists(raster_built) & file.exists(raster_pop)) {
@@ -59,13 +59,13 @@ f_create_uca_grids <- function(year) {
       }
     })
 
-  write_rds(urban_areas_cells, sprintf("../../data/urbanformbr/ghsl/results/grid_uca_%s_cutoff20.rds", year))
+  write_rds(urban_areas_cells, sprintf("../../data/urbanformbr/ghsl/results/grid_uca_%s_cutoff5.rds", year))
 
 }
 
 # run for mulitple years --------------------------------------------------
 
-anos <- c("1990","2000","2014")
+anos <- c("1975","1990","2000","2014")
 
 furrr::future_walk(anos, ~f_create_uca_grids(.))
 
